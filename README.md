@@ -24,10 +24,15 @@
 
 ##  Why Build This?
 
-Most deep learning today is done with a couple of high-level PyTorch or TensorFlow imports. While powerful, frameworks hide all the low-level linear algebra, memory layouts, and numerical gradient physics.
+Two major motivations drove this project:
 
-**I wanted to see if I could build, train, and converge a legitimately deep 100-layer neural network from complete scratch using only pure NumPy matrix multiplication.**
+1. **A Passion for Computational Biology & Cancer Research:** 
+   Cancer genomics is one of the most critical frontiers in modern medicine. Millions of individuals carry unique genetic variants, yet figuring out whether a specific DNA mutation drives oncogenesis or is just a harmless benign polymorphism remains a complex biological puzzle. I wanted to build an open-source project that contributes to the biology and genomics research community — making cancer variant pathogenicity analysis transparent, mathematically grounded, and accessible to students, researchers, and bioinformaticians worldwide.
 
+2. **Demystifying Deep Learning from Complete Scratch:**
+   Most deep learning today is done with a couple of high-level PyTorch or TensorFlow imports. While convenient, frameworks turn neural networks into opaque black boxes that hide the underlying linear algebra, memory layouts, and numerical gradient physics. I wanted to see if I could build, train, and converge a legitimately deep **100-layer neural network from complete scratch** using only pure NumPy matrix multiplication.
+
+### The Challenge: Vanishing Gradients Across 100 Layers
 If you try naively stacking 100 dense layers with standard Sigmoid activations, backpropagation multiplies derivatives until your gradients completely vanish ($0.25^{100} \approx 10^{-60}$) by layer 10. The early layers stay frozen at initialization, and the model never learns.
 
 ### How ROTN fixes this:
