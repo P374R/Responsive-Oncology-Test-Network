@@ -1,0 +1,21 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary and Large Data Ingestion Files (>100MB exceeds GitHub limits)
+*.tmp
+*.gz
+variant_summary*
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE & OS caches
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

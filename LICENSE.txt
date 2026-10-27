@@ -1,0 +1,152 @@
+================================================================================
+ROTN NON-COMMERCIAL ATTRIBUTION & EXPERIMENTAL RESEARCH LICENSE
+================================================================================
+Copyright (c) 2026 Petar Belchovski (P374R). All Rights Reserved.
+================================================================================
+
+IMPORTANT: PLEASE READ THIS LICENSE CAREFULLY BEFORE ACCESSING, DOWNLOADING,
+USING, COPYING, OR DISTRIBUTING THE SOFTWARE. BY ACCESSING, COPYING, OR USING
+ANY PORTION OF THIS SOFTWARE, YOU AGREE TO BE UNCONDITIONALLY BOUND BY ALL
+TERMS, CONDITIONS, AND RESTRICTIONS CONTAINED HEREIN. IF YOU DO NOT AGREE,
+DO NOT USE, COPY, OR DISTRIBUTE THIS SOFTWARE.
+
+================================================================================
+1. DEFINITIONS
+================================================================================
+"Author" refers exclusively to Petar Belchovski (also known as P374R), the sole
+creator, architect, and copyright holder of the Software.
+
+"Software" refers to the Responsive Oncology Test Network (ROTN), including but
+not limited to all source code files (train.py, oncotest.py, download_data.py,
+and any accompanying scripts), architecture specifications, mathematical
+formulations, network configurations, serialized model weights (including
+rotn_weights.npz), datasets, documentation (README.md), and associated assets.
+
+"Derivative Work" refers to any modification, adaptation, enhancement, fork,
+translation to other programming languages (including C, C++, Rust, Go, Java,
+Julia), framework reimplementations (including PyTorch, TensorFlow, JAX, ONNX,
+Keras), model fine-tunes, weight distillations, or work derived from the Software.
+
+"Commercial Use" refers to any activity conducted with the intent or effect of
+generating financial gain, revenue, profit, or commercial advantage, including
+but not limited to: selling, reselling, licensing for a fee, offering as a
+paid service, Software-as-a-Service (SaaS), cloud API hosting, bundling with
+commercial software, training proprietary models for commercial deployment, or
+using the Software in private corporate enterprises for commercial production.
+
+================================================================================
+2. GRANT OF PERMITTED USE (RESEARCH & EDUCATIONAL ONLY)
+================================================================================
+Subject to strict and ongoing compliance with all terms of this License, the
+Author hereby grants you a personal, non-exclusive, non-transferable, royalty-free,
+revocable license to:
+  (a) Use, run, study, and inspect the Software on your local devices.
+  (b) Conduct non-commercial scientific, academic, and genomics research.
+  (c) Test, benchmark, modify, and experiment with the algorithms and architectures.
+  (d) Create non-commercial derivative works strictly subject to Sections 3, 4, 5, and 6.
+
+================================================================================
+3. STRICT COMMERCIAL PROHIBITION (NO MONETIZATION WITHOUT WRITTEN PERMISSION)
+================================================================================
+  (a) YOU MAY NOT SELL, RESELL, LEASE, RENT, OR MONETIZE THIS SOFTWARE OR ANY
+      DERIVATIVE WORK THEREOF, IN WHOLE OR IN PART.
+  (b) YOU MAY NOT PROVIDE THIS SOFTWARE, ITS INFERENCE CAPABILITIES, OR ITS
+      WEIGHTS AS A HOSTED SERVICE, PAID API, SAAS, OR PAYWALLED PLATFORM.
+  (c) YOU MAY NOT EMBED OR BUNDLE THIS SOFTWARE INTO ANY COMMERCIAL PRODUCT,
+      SUITE, HARDWARE APPLIANCE, OR ENTERPRISE WORKFLOW.
+  (d) YOU MAY NOT DISTILL, EXTRACT, OR HARVEST THE TRAINED WEIGHTS FOR COMMERCIAL
+      MODEL RETRAINING OR COMMERCIAL PROPRIETARY DATASET SYNTHESIS.
+  (e) ANY COMMERCIAL USE, SALE, OR MONETIZATION WHATSOEVER REQUIRES A PRIOR,
+      SEPARATE, FORMAL WRITTEN LICENSE SIGNED PERSONALLY BY PETAR BELCHOVSKI (P374R).
+
+================================================================================
+4. MANDATORY ORIGINAL AUTHOR ATTRIBUTION (UNREMOVABLE)
+================================================================================
+  (a) Petar Belchovski (P374R) must be visibly, prominently, and permanently
+      credited as the original author, creator, and architect in all copies,
+      forks, distributions, and derivative works.
+  (b) You may NOT remove, alter, conceal, or suppress:
+      - The original copyright notice.
+      - The author credit "Petar Belchovski (P374R)".
+      - The visual terminal banners, headers, or docstring author tags.
+      - This LICENSE.txt file.
+  (c) Any scientific paper, thesis, preprint, benchmark report, or public
+      presentation that utilizes, evaluates, or references this Software must
+      explicitly cite Petar Belchovski (P374R) and the Responsive Oncology
+      Test Network (ROTN).
+
+================================================================================
+5. ANTI-RELICENSING CLAUSE (PERPETUAL & UNBREAKABLE)
+================================================================================
+  (a) The Software and any and all Derivative Works remain exclusively under
+      the copyright, authorship, and licensing terms of Petar Belchovski (P374R).
+  (b) YOU MAY NOT RELICENSE, SUB-LICENSE, OR RE-DISTRIBUTE THIS SOFTWARE OR ANY
+      DERIVATIVE WORK UNDER MIT, APACHE, GPL, AGPL, BSD, CC0, PROPRIETARY, OR
+      ANY OTHER LICENSE.
+  (c) Any attempt to relicense, sublicense, or alter the licensing terms of
+      this codebase or its derivatives is legally void ab initio and constitutes
+      an immediate, willful act of copyright infringement.
+
+================================================================================
+6. CONTRIBUTOR & EDITOR IDENTIFICATION RULES
+================================================================================
+If you modify, extend, enhance, or contribute code, documentation, or data:
+  (a) You may identify yourself SOLELY as a "Contributor", "Editor", or "Modifier"
+      (e.g., "Additional modifications / edits contributed by [Your Name]").
+  (b) You may NOT claim original authorship, principal ownership, or copyright
+      over the fundamental architecture, design, mathematical structure, or
+      original implementation of the Software.
+  (c) The primary attribution to Petar Belchovski (P374R) must remain at the top
+      of all modified files and documentation.
+  (d) By publishing or distributing any modification to this Software, you grant
+      Petar Belchovski (P374R) an unrestricted, perpetual, royalty-free,
+      irrevocable license to integrate, adapt, or distribute your contributions
+      within the canonical project.
+
+================================================================================
+7. AUTOMATIC TERMINATION UPON BREACH
+================================================================================
+Any breach or violation of ANY provision of this License (including unauthorized
+sale, commercialization, failure to attribute, or attempted relicensing) shall
+IMMEDIATELY and AUTOMATICALLY terminate your license and all rights granted
+hereunder without the necessity of notice or legal demand. Upon termination,
+you must immediately destroy all copies of the Software in your possession.
+Continued use after termination constitutes intentional copyright infringement.
+
+================================================================================
+8. RESERVATION OF RIGHTS & SEVERABILITY
+================================================================================
+All rights not expressly granted to you in this License are reserved exclusively
+by Petar Belchovski (P374R). If any provision of this License is found to be
+invalid, illegal, or unenforceable under applicable law, such provision shall be
+modified to the minimum extent necessary to make it enforceable, and all
+remaining provisions of this License shall remain in full force and effect.
+
+================================================================================
+9. DISCLAIMER OF WARRANTY & LIMITATION OF LIABILITY
+================================================================================
+THE SOFTWARE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS, WITHOUT WARRANTY
+OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND
+NON-INFRINGEMENT.
+
+IN NO EVENT SHALL THE AUTHOR, PETAR BELCHOVSKI (P374R), OR ANY CONTRIBUTORS BE
+LIABLE FOR ANY CLAIM, DAMAGES, LOSSES, OR LIABILITIES, WHETHER IN AN ACTION OF
+CONTRACT, TORT, STRICT LIABILITY, OR OTHERWISE, ARISING FROM, OUT OF, OR IN
+CONNECTION WITH THE SOFTWARE, ITS OPERATION, INFERENCE OUTPUTS, OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+================================================================================
+10. MEDICAL & CLINICAL GENOMICS DISCLAIMER
+================================================================================
+THIS SOFTWARE IS AN EXPERIMENTAL COMPUTATIONAL RESEARCH PROTOTYPE DESIGNED TO
+STUDY ZERO-FRAMEWORK NEURAL NETWORKS AND NUMERICAL GRADIENT PROPAGATION.
+IT IS NOT A MEDICAL DEVICE AND HAS NOT BEEN EVALUATED OR APPROVED BY THE US FDA,
+EMA, OR ANY REGULATORY BODY FOR CLINICAL USE.
+
+CLASSIFICATION PREDICTIONS, PROBABILITIES, HAZARD TAGS, AND SEVERITY ESTIMATES
+PRODUCED BY THIS TOOL MUST NEVER BE USED FOR CLINICAL DIAGNOSIS, PATIENT MEDICAL
+DECISIONS, TREATMENT FORMULATION, OR THERAPEUTIC MONITORING. ANY EXPERIMENTAL
+FINDINGS MUST BE INDEPENDENTLY TESTED AND CONFIRMED VIA ACCREDITED LABORATORY
+GENOMICS AND MOLECULAR PATHOLOGY PROTOCOLS.
+================================================================================
