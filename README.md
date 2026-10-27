@@ -13,7 +13,7 @@
 ##  Medical & Research Disclaimer
 
 > [!CAUTION]
-> **RESEARCH & EDUCATIONAL USE ONLY — NOT A CLINICAL DIAGNOSTIC TOOL**
+> **RESEARCH & EDUCATIONAL USE ONLY - NOT A CLINICAL DIAGNOSTIC TOOL**
 > 
 > ROTN is an open-source educational project exploring computational genomics and deep neural network mathematics from first principles.
 > - **Never** use this software for clinical diagnoses, patient care decisions, or oncology treatment planning.
@@ -27,7 +27,7 @@
 Two major motivations drove this project:
 
 1. **A Passion for Computational Biology & Cancer Research:** 
-   Cancer genomics is one of the most critical frontiers in modern medicine. Millions of individuals carry unique genetic variants, yet figuring out whether a specific DNA mutation drives oncogenesis or is just a harmless benign polymorphism remains a complex biological puzzle. I wanted to build an open-source project that contributes to the biology and genomics research community — making cancer variant pathogenicity analysis transparent, mathematically grounded, and accessible to students, researchers, and bioinformaticians worldwide.
+   Cancer genomics is one of the most critical frontiers in modern medicine. Millions of individuals carry unique genetic variants, yet figuring out whether a specific DNA mutation drives oncogenesis or is just a harmless benign polymorphism remains a complex biological puzzle. I wanted to build an open-source project that contributes to the biology and genomics research community - making cancer variant pathogenicity analysis transparent, mathematically grounded, and accessible to students, researchers, and bioinformaticians worldwide.
 
 2. **Demystifying Deep Learning from Complete Scratch:**
    Most deep learning today is done with a couple of high-level PyTorch or TensorFlow imports. While convenient, frameworks turn neural networks into opaque black boxes that hide the underlying linear algebra, memory layouts, and numerical gradient physics. I wanted to see if I could build, train, and converge a legitimately deep **100-layer neural network from complete scratch** using only pure NumPy matrix multiplication.
@@ -113,12 +113,12 @@ echo "KRAS:c.35G>A" | python oncotest.py -
 ### The 400-Dimensional Feature Encoder
 Raw variant strings and DNA sequences are mapped into a rich 400-dimensional numerical representation:
 
-*  **Allele Sequences (Dims 0–199):** One-hot encoded base pairs (A, C, G, T) for reference and alternate alleles up to 25 nucleotides each.
-*  **Substitution Matrix (Dims 200–215):** Explicit $4 \times 4$ mapping of the exact nucleotide transition (e.g., $C \to T$).
-*  **Mutation Signatures (Dims 216–225):** Transition vs. transversion flags, insertion/deletion length deltas, CpG island context, and GC content ratios.
-*  **Genomic & Gene Context (Dims 226–282):** Chromosome one-hot representation, normalized genomic coordinate, and matching against 80+ validated cancer driver genes (*TP53*, *BRCA1*, *BRCA2*, *KRAS*, *EGFR*, *PTEN*, etc.).
-*  **Dinucleotide Frequencies (Dims 283–298):** Frequency spectrum of dinucleotide pairs (AA, AC, AG, etc.).
-*  **Raw Sequence Fallback (Dims 0–399):** If a raw sequence is provided without variant syntax, up to 100 nucleotides are binary-encoded across all 400 dimensions.
+*  **Allele Sequences (Dims 0-199):** One-hot encoded base pairs (A, C, G, T) for reference and alternate alleles up to 25 nucleotides each.
+*  **Substitution Matrix (Dims 200-215):** Explicit $4 \times 4$ mapping of the exact nucleotide transition (e.g., $C \to T$).
+*  **Mutation Signatures (Dims 216-225):** Transition vs. transversion flags, insertion/deletion length deltas, CpG island context, and GC content ratios.
+*  **Genomic & Gene Context (Dims 226-282):** Chromosome one-hot representation, normalized genomic coordinate, and matching against 80+ validated cancer driver genes (*TP53*, *BRCA1*, *BRCA2*, *KRAS*, *EGFR*, *PTEN*, etc.).
+*  **Dinucleotide Frequencies (Dims 283-298):** Frequency spectrum of dinucleotide pairs (AA, AC, AG, etc.).
+*  **Raw Sequence Fallback (Dims 0-399):** If a raw sequence is provided without variant syntax, up to 100 nucleotides are binary-encoded across all 400 dimensions.
 
 ###  Risk Severity Scale
 
@@ -126,12 +126,12 @@ Predictions output a probability score mapped across 6 clinical risk tiers:
 
 | Probability Range | Hazard Status | Clinical Classification | Recommended Action |
 | :---: | :---: | :--- | :--- |
-| $\ge 90\%$ | `[!! HAZARD ALERT !!]` | **PATHOGENIC — CRITICAL** | Immediate expert review & wet-lab validation |
-| $75\% - 89\%$ | `[!! HAZARD ALERT !!]` | **PATHOGENIC — HIGH RISK** | Priority clinical investigation & confirmatory test |
+| $\ge 90\%$ | `[!! HAZARD ALERT !!]` | **PATHOGENIC - CRITICAL** | Immediate expert review & wet-lab validation |
+| $75\% - 89\%$ | `[!! HAZARD ALERT !!]` | **PATHOGENIC - HIGH RISK** | Priority clinical investigation & confirmatory test |
 | $50\% - 74\%$ | `[! CAUTION !]` | **UNCERTAIN SIGNIFICANCE (VUS)** | Family segregation & functional assay analysis |
 | $25\% - 49\%$ | `[MONITOR]` | **LIKELY BENIGN** | Low risk; routine baseline monitoring |
-| $10\% - 24\%$ | `[CLEAR]` | **BENIGN — LOW RISK** | Negligible clinical significance |
-| $< 10\%$ | `[CLEAR]` | **BENIGN — NOMINAL** | Normal baseline genomic profile |
+| $10\% - 24\%$ | `[CLEAR]` | **BENIGN - LOW RISK** | Negligible clinical significance |
+| $< 10\%$ | `[CLEAR]` | **BENIGN - NOMINAL** | Normal baseline genomic profile |
 
 ---
 
@@ -185,7 +185,7 @@ python train.py --data my_data.csv --val-split 0.20
 
 #### Hardware Acceleration & Optimization
 * **Intel / AMD CPU (Zero-Install):** Uses vectorized AVX2/OpenBLAS matrix routines. Using `--batch-size 256` reduces Python loop iterations by 75% and speeds up CPU training by **3x to 4x**!
-* **GPU Acceleration:** Install CuPy with CUDA Toolkit headers (`pip install "cupy-cuda12x[ctk]"`), the official CUDA drop-in for NumPy. ROTN will automatically detect your GPU and accelerate the 100-layer matrix algebra on Tensor Cores (**40x–80x faster**, dropping epoch times from ~4s to ~0.08s).
+* **GPU Acceleration:** Install CuPy with CUDA Toolkit headers (`pip install "cupy-cuda12x[ctk]"`), the official CUDA drop-in for NumPy. ROTN will automatically detect your GPU and accelerate the 100-layer matrix algebra on Tensor Cores (**40x-80x faster**, dropping epoch times from ~4s to ~0.08s).
 * **Automatic 80/20 Train/Val Split:** Evaluates both training and validation loss/accuracy to prove real generalization.
 * **Live Progress & ETA:** Prints speed (seconds per epoch), time remaining (ETA), loss curves, and prediction spread in real time without lag.
 * **Safe Interruption (`Ctrl+C`):** If you press `Ctrl+C`, the script cleanly catches the interrupt and saves your best checkpoint to `rotn_weights.npz` so your time is never wasted.
