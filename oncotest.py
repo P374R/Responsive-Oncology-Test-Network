@@ -1,5 +1,6 @@
+#!python3.12
 """
-Responsive Oncology Test Network — Diagnostic Terminal Suite v2.2
+Responsive Oncology Test Network - Diagnostic Terminal Suite v2.2
 ===================================================================
 Author: Petar Belchovski (P374R)
 Copyright (c) 2026 Petar Belchovski (P374R). All Rights Reserved.
@@ -55,7 +56,7 @@ GENE_TO_INDEX = {g: i for i, g in enumerate(TOP_CANCER_GENES)}
 CHROMOSOMES = [str(i) for i in range(1, 23)] + ["X", "Y"]
 CHROM_TO_INDEX = {c: i for i, c in enumerate(CHROMOSOMES)}
 
-NUCLEOTIDE_LUT = np.zeros((256, 4), dtype=np.float64)
+NUCLEOTIDE_LUT = np.zeros((256, 4), dtype=np.float32)
 NUCLEOTIDE_LUT[ord("A")] = NUCLEOTIDE_LUT[ord("a")] = [0.0, 0.0, 0.0, 1.0]
 NUCLEOTIDE_LUT[ord("C")] = NUCLEOTIDE_LUT[ord("c")] = [0.0, 0.0, 1.0, 0.0]
 NUCLEOTIDE_LUT[ord("G")] = NUCLEOTIDE_LUT[ord("g")] = [0.0, 1.0, 0.0, 0.0]
@@ -64,7 +65,7 @@ BASE_PAIR_INDICES = {"A": 0, "C": 1, "G": 2, "T": 3}
 
 
 def encode_sequence_string(seq: str, max_len: int = 100) -> np.ndarray:
-    vec = np.zeros((1, max_len * 4), dtype=np.float64)
+    vec = np.zeros((1, max_len * 4), dtype=np.float32)
     clean = seq.upper()
     for i in range(min(len(clean), max_len)):
         c = ord(clean[i]) if ord(clean[i]) < 256 else 0
@@ -123,7 +124,7 @@ def parse_and_encode_input(raw_input: str) -> tuple:
     if (">" in raw_clean or "/" in raw_clean or ":" in raw_clean) and not raw_clean.startswith(">"):
         gene, chrom, pos, ref, alt = parse_variant_string(raw_clean)
         if ref and alt:
-            vec = np.zeros((1, 400), dtype=np.float64)
+            vec = np.zeros((1, 400), dtype=np.float32)
             vec[0, 0:100] = encode_sequence_string(ref, max_len=25)[0]
             vec[0, 100:200] = encode_sequence_string(alt, max_len=25)[0]
 
@@ -383,7 +384,7 @@ def run_interactive_session(net: ReconstructedNetwork) -> None:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Responsive Oncology Test Network — Diagnostic Terminal Suite")
+    parser = argparse.ArgumentParser(description="Responsive Oncology Test Network - Diagnostic Terminal Suite")
     parser.add_argument("sequence_or_variant", nargs="?", default=None, help="Target DNA sequence or variant notation (or '-' for piped STDIN).")
     parser.add_argument("--demo", action="store_true", help="Run pre-loaded clinical benchmark demonstrations.")
     parser.add_argument("--weights", type=str, default="rotn_weights.npz", help="Path to trained weights .npz archive.")

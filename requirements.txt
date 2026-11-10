@@ -4,6 +4,11 @@
 numpy>=1.20.0
 pandas>=1.3.0
 
-# Optional GPU Acceleration (NVIDIA CUDA 12.x):
-# Uncomment below or install via: pip install "cupy-cuda12x[ctk]"
+# GPU Hardware Acceleration (Auto-detected by ROTN):
+# -------------------------------------------------------------
+# 1. ANY NVIDIA GPU (All RTX 20/30/40/50, GTX, Quadro, Tesla):
+#    pip install "cupy-cuda12x[ctk]"
+#
+# 2. ANY AMD GPU (All Radeon RX 5000/6000/7000/8000, Vega, Instinct):
+#    pip install cupy-rocm-6-0
 # cupy-cuda12x[ctk]>=13.0.0

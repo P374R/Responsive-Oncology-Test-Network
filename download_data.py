@@ -1,5 +1,6 @@
+#!python3.12
 """
-Responsive Oncology Test Network — Automated Data Engineering Pipeline
+Responsive Oncology Test Network - Automated Data Engineering Pipeline
 ========================================================================
 Author: Petar Belchovski (P374R)
 Copyright (c) 2026 Petar Belchovski (P374R). All Rights Reserved.
@@ -201,7 +202,7 @@ def process_full_clinvar_archive(archive_path: Path, max_rows: int = DEFAULT_MAX
 
 
 def main():
-    parser = argparse.ArgumentParser(description="ROTN — NCBI ClinVar Full Archive Pipeline")
+    parser = argparse.ArgumentParser(description="ROTN - NCBI ClinVar Full Archive Pipeline")
     parser.add_argument("--all", action="store_true", dest="keep_all", help="Retain all oncology variants.")
     parser.add_argument("--max-rows", type=int, default=DEFAULT_MAX_OUTPUT_ROWS, help=f"Max output rows (default: {DEFAULT_MAX_OUTPUT_ROWS:,}).")
     parser.add_argument("--redownload", action="store_true", help="Force re-download of archive.")
@@ -209,7 +210,7 @@ def main():
     args = parser.parse_args()
 
     print("\n+========================================================================+")
-    print("|  RESPONSIVE ONCOLOGY TEST NETWORK — DATA PIPELINE v2.2                 |")
+    print("|  RESPONSIVE ONCOLOGY TEST NETWORK - DATA PIPELINE v2.2                 |")
     print("|  Author: Petar Belchovski (P374R)                                      |")
     print("+========================================================================+\n")
 

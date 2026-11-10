@@ -1,5 +1,6 @@
+#!python3.12
 """
-Responsive Oncology Test Network — Deep Residual Mini-Batch Training Engine
+Responsive Oncology Test Network - Deep Residual Mini-Batch Training Engine
 ============================================================================
 Author: Petar Belchovski (P374R)
 Copyright (c) 2026 Petar Belchovski (P374R). All Rights Reserved.
@@ -27,7 +28,7 @@ if sys.stderr.encoding != "utf-8":
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="cupy")
 
-# Hardware Acceleration Detection (CPU vs. NVIDIA CUDA GPU via CuPy)
+# Hardware Acceleration Detection (Self-contained GPU Engine)
 try:
     # pyrefly: ignore[missing-import]
     import cupy as cp
@@ -36,6 +37,75 @@ try:
 except Exception:
     cp = None
     CUPY_AVAILABLE = False
+
+
+def detect_gpu_hardware() -> dict:
+    """
+    Scans active GPU runtimes (NVIDIA CUDA / Tensor Cores and AMD ROCm / HIP)
+    plus physical hardware adapters across Windows and POSIX systems.
+    """
+    info = {
+        "runtime_available": CUPY_AVAILABLE,
+        "vendor": "CPU",
+        "device_name": "Multi-threaded CPU",
+        "vram_gb": 0.0,
+        "backend": "OpenBLAS / AVX2",
+        "physical_gpus": [],
+        "is_hip": False,
+    }
+
+    # 1. Probe active CuPy runtime (supports all NVIDIA RTX/GTX via CUDA and all AMD cards via ROCm/HIP)
+    if CUPY_AVAILABLE and cp is not None:
+        try:
+            dev = cp.cuda.Device()
+            props = cp.cuda.runtime.getDeviceProperties(dev.id)
+            raw_name = props["name"].decode() if isinstance(props["name"], bytes) else str(props["name"])
+            is_hip = getattr(cp.cuda.runtime, "is_hip", False)
+            vram_gb = dev.mem_info[1] / (1024 ** 3)
+            info["device_name"] = raw_name
+            info["vram_gb"] = round(vram_gb, 2)
+            info["is_hip"] = is_hip
+
+            name_upper = raw_name.upper()
+            if is_hip or "AMD" in name_upper or "RADEON" in name_upper:
+                info["vendor"] = "AMD"
+                info["backend"] = "AMD ROCm / HIP (rocBLAS High-Saturation Mode)"
+            elif any(k in name_upper for k in ["NVIDIA", "GEFORCE", "RTX", "GTX", "QUADRO", "TESLA"]):
+                info["vendor"] = "NVIDIA"
+                info["backend"] = "NVIDIA CUDA / Tensor Cores (cuBLAS High-Saturation Mode)"
+            else:
+                info["vendor"] = "GPU"
+                info["backend"] = "Universal GPU Acceleration (High-Saturation Mode)"
+            return info
+        except Exception:
+            pass
+
+    # 2. Probe physical GPU adapters if runtime is not loaded or running CPU fallback
+    physical = []
+    if os.name == "nt":
+        try:
+            import subprocess
+            cmd = ["powershell", "-NoProfile", "-Command", "Get-CimInstance Win32_VideoController | Select-Object -ExpandProperty Name"]
+            out = subprocess.check_output(cmd, text=True, timeout=2).strip()
+            for line in out.splitlines():
+                l = line.strip()
+                if l and not any(skip in l.lower() for skip in ["basic display", "remote", "virtual", "rdp"]):
+                    physical.append(l)
+        except Exception:
+            pass
+    elif os.path.exists("/sys/class/drm"):
+        try:
+            import subprocess
+            out = subprocess.check_output(["lspci"], text=True, timeout=2)
+            for line in out.splitlines():
+                if "VGA" in line or "3D controller" in line:
+                    physical.append(line.split(":")[-1].strip())
+        except Exception:
+            pass
+
+    info["physical_gpus"] = physical
+    return info
+
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 TOP_CANCER_GENES = [
@@ -47,7 +117,7 @@ GENE_TO_INDEX = {g: i for i, g in enumerate(TOP_CANCER_GENES)}
 CHROMOSOMES = [str(i) for i in range(1, 23)] + ["X", "Y"]
 CHROM_TO_INDEX = {c: i for i, c in enumerate(CHROMOSOMES)}
 
-NUCLEOTIDE_LUT = np.zeros((256, 4), dtype=np.float64)
+NUCLEOTIDE_LUT = np.zeros((256, 4), dtype=np.float32)
 NUCLEOTIDE_LUT[ord("A")] = NUCLEOTIDE_LUT[ord("a")] = [0.0, 0.0, 0.0, 1.0]
 NUCLEOTIDE_LUT[ord("C")] = NUCLEOTIDE_LUT[ord("c")] = [0.0, 0.0, 1.0, 0.0]
 NUCLEOTIDE_LUT[ord("G")] = NUCLEOTIDE_LUT[ord("g")] = [0.0, 1.0, 0.0, 0.0]
@@ -58,7 +128,7 @@ BASE_PAIR_INDICES = {"A": 0, "C": 1, "G": 2, "T": 3}
 def encode_sequence_batch(sequences: list, max_len: int = 25) -> np.ndarray:
     n = len(sequences)
     if n == 0:
-        return np.zeros((0, max_len * 4), dtype=np.float64)
+        return np.zeros((0, max_len * 4), dtype=np.float32)
     fixed = "".join(str(s)[:max_len].ljust(max_len) for s in sequences)
     b = np.frombuffer(fixed.encode("ascii", errors="replace"), dtype=np.uint8).reshape(n, max_len)
     return NUCLEOTIDE_LUT[b].reshape(n, max_len * 4)
@@ -66,7 +136,7 @@ def encode_sequence_batch(sequences: list, max_len: int = 25) -> np.ndarray:
 
 def encode_dataset_to_400dim(df: pd.DataFrame) -> np.ndarray:
     n = len(df)
-    features = np.zeros((n, 400), dtype=np.float64)
+    features = np.zeros((n, 400), dtype=np.float32)
     if "ReferenceAlleleVCF" in df.columns and "AlternateAlleleVCF" in df.columns:
         ref_s = df["ReferenceAlleleVCF"].fillna("").astype(str).str.upper().str.strip()
         alt_s = df["AlternateAlleleVCF"].fillna("").astype(str).str.upper().str.strip()
@@ -77,8 +147,8 @@ def encode_dataset_to_400dim(df: pd.DataFrame) -> np.ndarray:
         is_snv = (ref_len == 1) & (alt_len == 1)
         ref_first, alt_first = ref_s.str[0].values, alt_s.str[0].values
 
-        transitions = np.zeros(n, dtype=np.float64)
-        transversions = np.zeros(n, dtype=np.float64)
+        transitions = np.zeros(n, dtype=np.float32)
+        transversions = np.zeros(n, dtype=np.float32)
         for i in range(n):
             if is_snv[i]:
                 r, a = ref_first[i], alt_first[i]
@@ -90,13 +160,13 @@ def encode_dataset_to_400dim(df: pd.DataFrame) -> np.ndarray:
                         transversions[i] = 1.0
 
         features[:, 216], features[:, 217] = transitions, transversions
-        features[:, 218] = (alt_len > ref_len).astype(np.float64)
-        features[:, 219] = (ref_len > alt_len).astype(np.float64)
+        features[:, 218] = (alt_len > ref_len).astype(np.float32)
+        features[:, 219] = (ref_len > alt_len).astype(np.float32)
         len_delta = alt_len - ref_len
         features[:, 220] = np.tanh(len_delta / 10.0)
         features[:, 221] = np.minimum(np.abs(len_delta), 50.0) / 50.0
-        features[:, 222] = ref_s.str.contains("CG", regex=False).astype(np.float64).values
-        features[:, 223] = (((ref_first == "C") & (alt_first == "T")) | ((ref_first == "G") & (alt_first == "A"))).astype(np.float64)
+        features[:, 222] = ref_s.str.contains("CG", regex=False).astype(np.float32).values
+        features[:, 223] = (((ref_first == "C") & (alt_first == "T")) | ((ref_first == "G") & (alt_first == "A"))).astype(np.float32)
         features[:, 224] = np.where(ref_len > 0, (ref_s.str.count("G").values + ref_s.str.count("C").values) / np.maximum(ref_len, 1), 0.0)
         features[:, 225] = np.where(alt_len > 0, (alt_s.str.count("G").values + alt_s.str.count("C").values) / np.maximum(alt_len, 1), 0.0)
 
@@ -160,17 +230,17 @@ class DeepGenomicNetwork:
         self.xp = cp if (self.device == "gpu" and CUPY_AVAILABLE) else np
 
         self.weights, self.biases = [], []
-        w0 = np.random.randn(input_size, hidden_size) * np.sqrt(2.0 / input_size)
-        b0 = np.zeros((1, hidden_size), dtype=np.float64)
+        w0 = (np.random.randn(input_size, hidden_size) * np.sqrt(2.0 / input_size)).astype(np.float32)
+        b0 = np.zeros((1, hidden_size), dtype=np.float32)
         self.weights.append(self.xp.asarray(w0))
         self.biases.append(self.xp.asarray(b0))
         for _ in range(1, hidden_layers):
-            wl = np.random.randn(hidden_size, hidden_size) * np.sqrt(2.0 / hidden_size)
-            bl = np.zeros((1, hidden_size), dtype=np.float64)
+            wl = (np.random.randn(hidden_size, hidden_size) * np.sqrt(2.0 / hidden_size)).astype(np.float32)
+            bl = np.zeros((1, hidden_size), dtype=np.float32)
             self.weights.append(self.xp.asarray(wl))
             self.biases.append(self.xp.asarray(bl))
-        w_out = np.random.randn(hidden_size, output_size) * (0.01 / np.sqrt(hidden_size))
-        b_out = np.zeros((1, output_size), dtype=np.float64)
+        w_out = (np.random.randn(hidden_size, output_size) * (0.01 / np.sqrt(hidden_size))).astype(np.float32)
+        b_out = np.zeros((1, output_size), dtype=np.float32)
         self.weights.append(self.xp.asarray(w_out))
         self.biases.append(self.xp.asarray(b_out))
 
@@ -309,7 +379,7 @@ def generate_mock_genomic_data(num_samples: int = 200, sequence_length: int = 10
 
 
 def train_network(
-    data_path: Path = None, epochs: int = 2500, batch_size: int = 256,
+    data_path: Path = None, epochs: int = 1000, batch_size: int = None,
     learning_rate: float = 0.001, optimizer: str = "adam", val_split: float = 0.20,
     output_weights_path: Path = None, device: str = "auto",
 ) -> tuple:
@@ -317,16 +387,43 @@ def train_network(
         output_weights_path = SCRIPT_DIR / "rotn_weights.npz"
     output_weights_path = Path(output_weights_path).resolve()
 
-    print("\n+========================================================================+", flush=True)
-    print("|  RESPONSIVE ONCOLOGY TEST NETWORK — DEEP RESIDUAL TRAINING ENGINE v2.2 |", flush=True)
-    print("|  Author: Petar Belchovski (P374R)                                      |", flush=True)
-    print("+========================================================================+\n", flush=True)
-
-    device_lower = str(device).lower()
-    if (device_lower == "auto" or device_lower == "gpu") and CUPY_AVAILABLE:
+    device_lower = str(device).lower().strip()
+    if (device_lower in ["auto", "gpu", "cuda", "rocm", "rtx", "amd"]) and CUPY_AVAILABLE:
         resolved_device = "gpu"
     else:
         resolved_device = "cpu"
+
+    # Hardware-aware batch sizing: 4096 for GPU core saturation, 256 for CPU thermal & cache efficiency
+    if batch_size is None or batch_size <= 0:
+        batch_size = 4096 if resolved_device == "gpu" else 256
+
+    gpu_info = detect_gpu_hardware()
+
+    print("\n+========================================================================+", flush=True)
+    print("|  RESPONSIVE ONCOLOGY TEST NETWORK - DEEP RESIDUAL TRAINING ENGINE v1.1 |", flush=True)
+    print("|  Author: Petar Belchovski (P374R)                                      |", flush=True)
+    print("+========================================================================+\n", flush=True)
+
+    if resolved_device == "gpu":
+        print(f"  [Hardware Acceleration: {gpu_info.get('vendor', 'GPU')} GPU ACTIVE]", flush=True)
+        print(f"  Compute Device  : {gpu_info.get('device_name', 'Universal GPU Accelerator')} ({gpu_info.get('vram_gb', 0.0):.2f} GB VRAM)", flush=True)
+        print(f"  Compute Backend : {gpu_info.get('backend', 'Universal GPU Acceleration')}", flush=True)
+        print("  VRAM Strategy   : Full Device Residency (0 Host-to-Device Bottlenecks)", flush=True)
+    else:
+        print("  [Hardware Acceleration: CPU ACTIVE]", flush=True)
+        print("  Compute Device  : CPU (Multi-threaded OpenBLAS / AVX2)", flush=True)
+        if gpu_info.get("physical_gpus"):
+            for p_gpu in gpu_info["physical_gpus"]:
+                p_up = p_gpu.upper()
+                if any(k in p_up for k in ["NVIDIA", "GEFORCE", "RTX", "GTX", "QUADRO", "TESLA"]):
+                    print(f"  [!] Physical GPU Detected: {p_gpu}", flush=True)
+                    print("      To activate GPU acceleration on your NVIDIA RTX/GTX card, run:", flush=True)
+                    print("      pip install \"cupy-cuda12x[ctk]\"", flush=True)
+                elif any(k in p_up for k in ["AMD", "RADEON", "INSTINCT"]):
+                    print(f"  [!] Physical GPU Detected: {p_gpu}", flush=True)
+                    print("      To activate GPU acceleration on your AMD Radeon card, run:", flush=True)
+                    print("      pip install cupy-rocm-6-0  (Linux / WSL2)", flush=True)
+    print("  " + "-" * 72, flush=True)
 
     if data_path and Path(data_path).is_file():
         resolved_data = Path(data_path).resolve()
@@ -348,7 +445,7 @@ def train_network(
     print(f"  [1/4] Loaded {len(df):,} records from: {resolved_data.name}", flush=True)
     t0_enc = time.time()
     X = encode_dataset_to_400dim(df)
-    y = df["is_cancerous"].values.astype(np.float64).reshape(-1, 1)
+    y = df["is_cancerous"].values.astype(np.float32).reshape(-1, 1)
     print(f"  [2/4] Encoded feature matrix {X.shape} in {time.time() - t0_enc:.3f}s", flush=True)
 
     indices = np.arange(len(df))
@@ -364,7 +461,7 @@ def train_network(
         input_size=400, hidden_layers=100, hidden_size=64, output_size=1,
         learning_rate=learning_rate, optimizer=optimizer, device=resolved_device,
     )
-    dev_str = "GPU (CUDA / CuPy)" if resolved_device == "gpu" else "CPU (Multi-threaded OpenBLAS / NumPy)"
+    dev_str = f"GPU ({gpu_info.get('vendor', 'GPU')} / High-Saturation)" if resolved_device == "gpu" else "CPU (Multi-threaded OpenBLAS / NumPy)"
     print(f"        Device: {dev_str} | Opt: {optimizer.upper()} | Batch: {batch_size}", flush=True)
     print(f"        Activation: LeakyReLU (alpha=0.01) | Residual Scale: {net.gamma:.4f} | Loss: BCE", flush=True)
     print("  " + "-" * 72, flush=True)
@@ -463,12 +560,12 @@ def train_network(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="ROTN — Deep Residual Training Engine")
-    parser.add_argument("--epochs", type=int, default=2500, help="Training epochs (default: 2500).")
-    parser.add_argument("--batch-size", type=int, default=256, help="Mini-batch size (default: 256).")
+    parser = argparse.ArgumentParser(description="ROTN - Deep Residual Training Engine")
+    parser.add_argument("--epochs", type=int, default=1000, help="Training epochs (default: 1000).")
+    parser.add_argument("--batch-size", type=int, default=None, help="Mini-batch size (default: auto - 4096 for GPU saturation, 256 for CPU efficiency).")
     parser.add_argument("--lr", type=float, default=0.001, help="Learning rate (default: 0.001).")
     parser.add_argument("--optimizer", type=str, default="adam", choices=["adam", "momentum"], help="Optimizer choice (default: adam).")
-    parser.add_argument("--device", type=str, default="auto", choices=["auto", "gpu", "cpu"], help="Compute device: auto, gpu, or cpu (default: auto).")
+    parser.add_argument("--device", type=str, default="auto", choices=["auto", "gpu", "cuda", "rocm", "rtx", "amd", "cpu"], help="Compute device: auto, gpu, cuda, rocm, rtx, amd, or cpu (default: auto).")
     parser.add_argument("--val-split", type=float, default=0.20, help="Validation split (default: 0.20).")
     parser.add_argument("--data", type=str, default=None, help="Path to CSV dataset.")
     parser.add_argument("--output", type=str, default=str(SCRIPT_DIR / "rotn_weights.npz"), help="Output .npz path.")
