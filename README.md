@@ -6,7 +6,6 @@
 [![Pure NumPy](https://img.shields.io/badge/NumPy-Zero--Framework-013243?style=flat&logo=numpy&logoColor=white)](https://numpy.org/)
 [![Pandas](https://img.shields.io/badge/Pandas-Data%20Pipeline-150458?style=flat&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
 [![License](https://img.shields.io/badge/License-Non--Commercial%20Attribution-blue.svg)](LICENSE.txt)
-[![Version](https://img.shields.io/badge/Version-v1.1.2-orange.svg)](VERSIONS/V1.1.2/VersionReadme.md)
 [![GPU Acceleration](https://img.shields.io/badge/GPU-CUDA%20%2B%20ROCm-76B900?style=flat&logo=nvidia&logoColor=white)](https://cupy.dev/)
 [![Author](https://img.shields.io/badge/Author-Petar%20Belchovski%20(P374R)-2ea44f.svg)](https://github.com/P374R/)
 
