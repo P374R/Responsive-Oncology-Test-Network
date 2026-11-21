@@ -239,7 +239,7 @@ Responsive-Oncology-Test-Network/
 
 ##  License & Attribution
 
-This project is created and authored by **Petar Belchovski (P374R)** under the **ROTN Non-Commercial Attribution & Experimental License**.
+This project is created and authored by **Petar Belchovski (P374R)** under the **ROTN NON-COMMERCIAL ATTRIBUTION & EXPERIMENTAL RESEARCH LICENSE**.
 
 ```
 Copyright (c) 2026 Petar Belchovski (P374R). All Rights Reserved.
