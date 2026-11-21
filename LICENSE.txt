@@ -61,6 +61,22 @@ royalty-free, irrevocable (except as provided in Section 7) license to:
   (e) ANY COMMERCIAL USE, SALE, OR MONETIZATION WHATSOEVER REQUIRES A PRIOR,
       SEPARATE, FORMAL WRITTEN LICENSE SIGNED PERSONALLY BY PETAR BELCHOVSKI
       (P374R). FOR COMMERCIAL LICENSING INQUIRIES, CONTACT: p374r.dev@gmail.com
+  (f) INDEPENDENT RESEARCHER ACCESS & CORPORATE NON-TRANSFERABILITY:
+      Independent, academic, and student researchers seeking formal written
+      authorization, institutional compliance verification, or direct scientific
+      collaboration may contact the Author directly at p374r.dev@gmail.com to
+      request authorization free of charge. Any authorization granted by the
+      Author is strictly personal to the designated individual, non-exclusive,
+      royalty-free, non-transferable, and remains unconditionally subject to all
+      terms, restrictions, and attribution requirements of this License.
+      Under no circumstances does this authorization extend to, license, or
+      benefit any third-party employer or corporation. In the event an
+      authorized researcher becomes employed by, contracts for, or conducts work
+      on behalf of any commercial entity, biotechnology enterprise, or private
+      corporation, this authorization SHALL NOT transfer to or benefit such
+      employer, and the Software, its weights, and its inference capabilities
+      remain strictly prohibited from commercial deployment or utilization by
+      such enterprise.
 
 ================================================================================
 4. MANDATORY ORIGINAL AUTHOR ATTRIBUTION (UNREMOVABLE)
