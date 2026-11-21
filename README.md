@@ -6,9 +6,21 @@
 [![Pure NumPy](https://img.shields.io/badge/NumPy-Zero--Framework-013243?style=flat&logo=numpy&logoColor=white)](https://numpy.org/)
 [![Pandas](https://img.shields.io/badge/Pandas-Data%20Pipeline-150458?style=flat&logo=pandas&logoColor=white)](https://pandas.pydata.org/)
 [![License](https://img.shields.io/badge/License-Non--Commercial%20Attribution-blue.svg)](LICENSE.txt)
-[![Version](https://img.shields.io/badge/Version-v1.1.0-orange.svg)](VERSIONS/V1.1.0/VersionReadme.md)
+[![Version](https://img.shields.io/badge/Version-v1.1.2-orange.svg)](VERSIONS/V1.1.2/VersionReadme.md)
 [![GPU Acceleration](https://img.shields.io/badge/GPU-CUDA%20%2B%20ROCm-76B900?style=flat&logo=nvidia&logoColor=white)](https://cupy.dev/)
 [![Author](https://img.shields.io/badge/Author-Petar%20Belchovski%20(P374R)-2ea44f.svg)](https://github.com/P374R/)
+
+---
+
+> [!CAUTION]
+> ### ⚠️ ENFORCEABLE LICENSING NOTICE
+> **All versions of ROTN (past, present, and future) are strictly governed by the current `LICENSE.txt` published in the root of the official repository.**
+> 
+> **The latest version of the ROTN Non-Commercial Attribution & Experimental Research License supersedes and controls all prior releases, tags, and distributions.**
+> 
+> *Commercial use, monetization, cloud API hosting, or internal corporate deployment without prior written authorization is strictly prohibited across ALL versions.*
+> 
+> **Commercial Inquiries & Written Licensing:** `p374r.dev@gmail.com`
 
 ---
 
@@ -227,12 +239,14 @@ Responsive-Oncology-Test-Network/
 ├── real_genomic_data.csv   # Real ClinVar dataset (generated via download_data.py)
 ├── rotn_weights.npz        # 100-layer residual weights archive (~1.59 MB, float32)
 ├── requirements.txt        # Core package dependencies (numpy, pandas)
-├── LICENSE.txt             # Non-Commercial Attribution & Experimental License
-├── VersionReadme.md        # v1.1.0 release notes
+├── LICENSE.txt             # Non-Commercial Attribution & Experimental Research License
+├── VersionReadme.md        # Current release notes (v1.1.2)
 ├── README.md               # Project documentation and manual
 └── VERSIONS/               # Versioned release archives and changelogs
-    ├── V1.0.0/             # Initial v1.0.0 release archive
-    └── V1.1.0/             # v1.1.0 GPU acceleration release notes
+    ├── V1.0.0/             # Initial v1.0.0 public release archive
+    ├── V1.1.0/             # v1.1.0 GPU acceleration engine release
+    ├── V1.1.1/             # v1.1.1 licensing jurisdiction hardening
+    └── V1.1.2/             # v1.1.2 independent researcher & corporate shield release
 ```
 
 ---
@@ -245,6 +259,9 @@ This project is created and authored by **Petar Belchovski (P374R)** under the *
 Copyright (c) 2026 Petar Belchovski (P374R). All Rights Reserved.
 ```
 
-*  **Non-Commercial Use:** You are welcome to inspect, fork, learn from, and modify this project for educational and scientific research purposes.
-*  **No Commercial Resale:** You may not monetize, resell, or distribute this software or its derivative weights for commercial purposes without prior explicit written permission from Petar Belchovski (P374R).
-*  **Attribution:** Any forks, papers, or public distributions must visibly credit **Petar Belchovski (P374R)** as the original author of the Responsive Oncology Test Network (ROTN).
+* **Non-Commercial Research & Education:** You are welcome to inspect, fork, study, benchmark, and modify this project for personal, educational, and non-commercial scientific research purposes.
+* **Strict Commercial Prohibition:** You may not monetize, sell, resell, lease, license, cloud host, or deploy this software, its architecture, or its trained weights (`rotn_weights.npz`) as a commercial service or paid API without a separate written license signed by Petar Belchovski (P374R).
+* **Mandatory Attribution:** Any forks, papers, preprints, benchmarks, or distributions must prominently credit **Petar Belchovski (P374R)** as the original creator and architect of ROTN.
+* **Independent Researcher Pathway (Section 3f):** Independent and student researchers can request free written research approval by contacting `p374r.dev@gmail.com`.
+* **Commercial Licensing Inquiries:** For commercial terms and enterprise licensing, contact `p374r.dev@gmail.com`.
+* **Governing Jurisdiction:** Republic of Croatia. Full binding legal terms are set forth in [LICENSE.txt](LICENSE.txt).
